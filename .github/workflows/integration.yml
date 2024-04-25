@@ -1,0 +1,51 @@
+name: Integration #Name of the workflow
+
+on: # On pull request on the main branch and pushing to the main branch run the following jobs
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest # run on the ubuntu-latest server
+
+    strategy: #strategy allows us to specify multiple node version to use in our server
+      matrix:
+        node-version: [14.x, 16.x, 18.x] # the steps are going to run for each and every step of our node version
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps: #The steps to take in order to run the job correctly
+    - uses: actions/checkout@v3 # checkout into that feature branch
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with: # specify the node version
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    # first install all our dependencies
+    - run: npm i 
+    # run the npm build 
+    - run: npm run build
+  unit-test:
+
+    runs-on: ubuntu-latest # run on the ubuntu-latest server
+
+    strategy: #strategy allows us to specify multiple node version to use in our server
+      matrix:
+        node-version: [14.x, 16.x, 18.x] # the steps are going to run for each and every step of our node version
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps: #The steps to take in order to run the job correctly
+    - uses: actions/checkout@v3 # checkout into that feature branch
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with: # specify the node version
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    # first install all our dependencies
+    - run: npm i 
+    # run the npm build 
+    - run: npm run test
+
+ 
