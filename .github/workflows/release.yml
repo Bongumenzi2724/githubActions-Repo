@@ -13,6 +13,6 @@ jobs:
     - uses: actions/checkout@v3 # checkout into that feature branch
     - run: docker build . -t bongumenzidocker/nest-app
     - run: docker login -u bongumenzidocker
-    - run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password stdin
+    - run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
     - run: docker push bongumenzidocker/nest-app
     #push the image into dockerhub
