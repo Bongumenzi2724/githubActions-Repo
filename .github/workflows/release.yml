@@ -1,0 +1,18 @@
+name: release #Name of the workflow release workflow
+
+on: # On pull request on the main branch and pushing to the main branch run the following jobs
+  push:
+    branches: [ main ]
+# run this only if we are merging into our workflow
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest # run on the ubuntu-latest server
+
+    steps: #The steps to take in order to run the job correctly
+    - uses: actions/checkout@v3 # checkout into that feature branch
+    - run: docker build . -t bongumenzidocker/nest-app
+    - run: docker login -u bongumenzidocker
+    - run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password stdin
+    - run: docker push bongumenzidocker/nest-app
+    #push the image into dockerhub
